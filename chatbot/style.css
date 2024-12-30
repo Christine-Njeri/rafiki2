@@ -1,0 +1,156 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: black;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensures the body is full height */
+}
+
+.container {
+    width: 95vw; /* Full width of the screen */
+    height: 95vh; /* Full height of the screen */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: cyan 0px 7px 29px 0px;
+    background: teal;
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: azure;
+}
+
+.chat {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    margin: 20px 0;
+    padding: 10px;
+    border: 2px solid turquoise;
+    border-radius: 5px;
+    background: teal;
+    word-wrap: break-word; /* Force breaking long words */
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.user{
+    justify-content: flex-end;
+}
+
+.bot {
+    justify-content: flex-start;
+    display: flex; /* Ensure bot uses flexbox */
+    align-items: center; /* Align avatar and text vertically */
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-size: cover; /* Ensures the image covers the avatar area */
+    background-position: center; /* Center the image in the avatar */
+}
+
+.user .avatar{
+    order: 2;
+    background: url(user.png);
+    background-size: cover;
+}
+
+.bot .avatar{
+    background: url(bot.png);
+    background-size: cover;
+    background-position: left center;
+}
+
+.text {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    word-wrap: break-word; /* Wrap long words */
+    white-space: pre-wrap; /* Preserve spacing and line breaks */
+}
+
+.user .text {
+    background-color: rgb(18, 16, 146);
+}
+
+.bot .text {
+    background-color: rgb(118, 17, 158);
+}
+
+.input-area {
+    display: flex;
+    align-items: center; /* Vertically align input and button */
+    justify-content: space-between; /* Ensure they stay in one row */
+    width: 100%;
+}
+
+.input {
+    flex: 1; /* Makes the input take up available space */
+    width: 95%;
+    padding: 10px;
+    border: 2px solid turquoise;
+    border-radius: 5px;
+    outline: none;
+    font-size: 20px;
+    resize: none; /* Prevent resizing of input */
+    word-wrap: break-word; /* Wrap long input text */
+    white-space: pre-wrap; /* Allow input to handle multi-line text properly */
+}
+
+.input:focus {
+    border-color: turquoise;
+    color: black;
+}
+
+.button {
+    width: 75px;
+    height: 47px;
+    margin-left: 5px;
+    border: 2px solid turquoise;
+    border-radius: 5px;
+    padding: 1px;
+    background: aliceblue;
+    color: darkslategray;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center icon inside button */
+}
+
+.button .material-symbols-outlined {
+    font-size: 43px; /* Adjust the size as needed */
+}
+
+.button:hover {
+    box-shadow: inset 0 0 10px darkslateblue;
+}
+
+.chat::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: aliceblue;
+    border-radius: 10px;
+}
