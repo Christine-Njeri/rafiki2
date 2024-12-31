@@ -1,30 +1,21 @@
-//send the user message and get a response from Django API
-function sendMessage() {
-    let input=document.getElementById("input").value;
-    if (input) {
-        displayUserMessage(input);
-        // Send the message to the Django API
-        fetch("/chatbot/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded", // Django expects form data
-            },
-            body: `message=${encodeURIComponent(input)}`,
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Display the bot's response
-            displayBotMessage(data.response);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            displayBotMessage("Error communicating with chatbot.");
-        });
+//simple chatbot
+function chatbot(input) {
+    let output = "Hello";
+    return output;
+}
 
-        // Clear the input field
+// send user message and get bot response
+function sendMessage() {
+    let input = document.getElementById("input").value;
+    if (input) {
+        displayUserMessage(input); // Display user message in chat
+        let output = chatbot(input);
+        setTimeout(function() {
+            displayBotMessage(output);
+        }, 1000);
         document.getElementById("input").value = "";
-    } 
     }
+}
 
 // Display user message on the chat
 function displayUserMessage(message){ 
@@ -60,42 +51,55 @@ function displayBotMessage(message){
     chat.scrollTop = chat.scrollHeight;
 }
 
-//send the user message and get a response
-function sendMessage() {
-    let input=document.getElementById("input").value;
-    if (input) {
-        displayUserMessage(input);
-        // Send the message to the Django API
-        fetch("/chatbot/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded", // Django expects form data
-            },
-            body: `message=${encodeURIComponent(input)}`,
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Display the bot's response
-            displayBotMessage(data.response);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            displayBotMessage("Error communicating with chatbot.");
-        });
+const historyList = document.getElementById('history-list');
+let chatHistory = {};
 
-        // Clear the input field
-        document.getElementById("input").value = "";
-    } 
+function saveToHistory() {
+    const chatContent = document.getElementById("chat").innerHTML;
+    if (chatContent.trim() !== '') {
+        const conversationKey = `Conversation ${Object.keys(chatHistory).length + 1}`;
+        chatHistory[conversationKey] = chatContent; // Store chat content in the object
+
+        // Save the entire chat history to local storage
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+        
+        const historyItem = document.createElement("li");
+        historyItem.textContent = conversationKey;
+        historyItem.addEventListener("click", () => {
+            document.getElementById("chat").innerHTML = chatHistory[historyItem.textContent];
+        });
+        historyList.appendChild(historyItem);
     }
+}
+
+function loadHistoryFromLocalStorage() {
+    const storedHistory = localStorage.getItem("chatHistory");
+    if (storedHistory) {
+        chatHistory = JSON.parse(storedHistory);
+
+        // Populate the history list
+        Object.keys(chatHistory).forEach(key => {
+            const historyItem = document.createElement("li");
+            historyItem.textContent = key;
+            historyItem.addEventListener("click", () => {
+                document.getElementById("chat").innerHTML = chatHistory[key];
+            });
+            historyList.appendChild(historyItem);
+        });
+    }
+}
+
+// Call this function when the page loads
+loadHistoryFromLocalStorage();
 
 //scroll the chat
 document.addEventListener("keydown", function (event) {
     const chat = document.getElementById("chat");
     if (event.key === "ArrowUp") {
-        chat.scrollTop -= 30; // Scroll up by 30px
-        event.preventDefault(); // Prevent any default action of the arrow key
+        chat.scrollBy({ top: -30, behavior: "smooth" });
+        event.preventDefault();
     } else if (event.key === "ArrowDown") {
-        chat.scrollTop += 30; // Scroll down by 30px
+        chat.scrollBy({ top: 30, behavior: "smooth" });
         event.preventDefault();
     }
 });
@@ -120,3 +124,6 @@ inputField.addEventListener("keydown", function (event) {
         event.preventDefault();
     }
 });
+
+ // Save conversation to history when window is closed
+ window.addEventListener('beforeunload', saveToHistory);
